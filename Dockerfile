@@ -25,7 +25,7 @@ RUN mkdir /opt/mcr_install \
 
 # Install SPM Standalone in /opt/spm12/
 ENV SPM_VERSION 12
-ENV SPM_REVISION latest
+ENV SPM_REVISION r7771
 ENV LD_LIBRARY_PATH /opt/mcr/${MCR_VERSION}/runtime/glnxa64:/opt/mcr/${MCR_VERSION}/bin/glnxa64:/opt/mcr/${MCR_VERSION}/sys/os/glnxa64:/opt/mcr/${MCR_VERSION}/sys/opengl/lib/glnxa64:/opt/mcr/${MCR_VERSION}/extern/bin/glnxa64
 ENV MCR_INHIBIT_CTF_LOCK 1
 ENV SPM_HTML_BROWSER 0
@@ -33,9 +33,9 @@ ENV SPM_HTML_BROWSER 0
 # extracts the ctf archive which is necessary if singularity is going to be
 # used later on, because singularity containers are read-only.
 # Also, set +x on the entrypoint for non-root container invocations
-RUN wget --no-check-certificate --progress=bar:force -P /opt https://www.fil.ion.ucl.ac.uk/spm/download/restricted/utopia/dev/tbx/spm${SPM_VERSION}_${SPM_REVISION}_tbx_Linux_${MATLAB_VERSION}.zip \
- && unzip -q /opt/spm${SPM_VERSION}_${SPM_REVISION}_tbx_Linux_${MATLAB_VERSION}.zip -d /opt \
- && rm -f /opt/spm${SPM_VERSION}_${SPM_REVISION}_tbx_Linux_${MATLAB_VERSION}.zip \
+RUN wget --no-check-certificate --progress=bar:force -P /opt https://www.fil.ion.ucl.ac.uk/spm/download/restricted/utopia/spm12/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip \
+ && unzip -q /opt/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip -d /opt \
+ && rm -f /opt/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip \
  && /opt/spm${SPM_VERSION}/spm${SPM_VERSION} function exit \
  && chmod +x /opt/spm${SPM_VERSION}/spm${SPM_VERSION}
 
