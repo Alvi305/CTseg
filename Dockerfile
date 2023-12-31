@@ -29,15 +29,14 @@ ENV SPM_REVISION r7771
 ENV LD_LIBRARY_PATH /opt/mcr/${MCR_VERSION}/runtime/glnxa64:/opt/mcr/${MCR_VERSION}/bin/glnxa64:/opt/mcr/${MCR_VERSION}/sys/os/glnxa64:/opt/mcr/${MCR_VERSION}/sys/opengl/lib/glnxa64:/opt/mcr/${MCR_VERSION}/extern/bin/glnxa64
 ENV MCR_INHIBIT_CTF_LOCK 1
 ENV SPM_HTML_BROWSER 0
-# Running SPM once with "function exit" tests the succesfull installation *and*
-# extracts the ctf archive which is necessary if singularity is going to be
-# used later on, because singularity containers are read-only.
-# Also, set +x on the entrypoint for non-root container invocations
 RUN wget --no-check-certificate --progress=bar:force -P /opt https://www.fil.ion.ucl.ac.uk/spm/download/restricted/utopia/spm12/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip \
  && unzip -q /opt/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip -d /opt \
  && rm -f /opt/spm${SPM_VERSION}_${SPM_REVISION}_Linux_${MATLAB_VERSION}.zip \
  && /opt/spm${SPM_VERSION}/spm${SPM_VERSION} function exit \
  && chmod +x /opt/spm${SPM_VERSION}/spm${SPM_VERSION}
+
+# Copy the MATLAB files into the SPM12 directory
+COPY spm_CTseg.m spm_CTseg_util.m spm_CTseg_warp.m /opt/spm12/
 
 # Check that CTseg model files are installed and download them otherwise
 RUN /opt/spm12/spm12 eval "try,spm_CTseg(1);end"
